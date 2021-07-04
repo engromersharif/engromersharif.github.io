@@ -1,0 +1,888 @@
+---
+title: "Ethanol Price Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(ggplot2)
+library(plotly)
+library(ggthemes)
+library(dplyr)
+library(viridis)
+library(readxl)
+
+# Induct In Ethanol Excel Sheet
+Main <- read_excel("C:/Users/omer.sharif/Desktop/Office Computer/Capstone/R Codes/May-21/Main.xlsm")
+
+Main$REGION <- as.factor(Main$REGION)
+Main$Product <- as.factor(Main$Product)
+Main$COUNTRY <- as.factor(Main$COUNTRY)
+
+# Filter Year More Than 2017
+Main <- Main %>% filter(Year > 2017)
+
+
+Main_Jan2021 <- Main %>% filter(Year == 2021 & Month == "Jan")
+Main_Feb2021 <- Main %>% filter(Year == 2021 & Month == "Feb")
+Main_Mar2021 <- Main %>% filter(Year == 2021 & Month == "Mar")
+Main_Apr2021 <- Main %>% filter(Year == 2021 & Month == "Apr")
+Main_May2021 <- Main %>% filter(Year == 2021 & Month =="May")
+
+
+```
+
+# 1.Product Wise
+
+## Row {.tabset}
+
+### 2018 - 2021
+
+```{r}
+
+attach(Main)
+
+REGION <- as.factor(Main$REGION)
+p <- ggplot(data=Main,aes(x= DATE ,y=`M.Ton Price`,fill=REGION))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) +
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="PRODUCT WISE ETHANOL PRICES PER METRIC TON - YEAR 2018 TO 2021",x="",y="")
+p <- p + facet_grid(.~Product) + scale_fill_viridis_d() + guides(fill=FALSE) 
+p <- ggplotly(p) 
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main)
+
+```
+
+
+### Jan-2021
+
+```{r}
+
+attach(Main_Jan2021)
+
+p <- ggplot(data=Main_Jan2021,aes(x= DATE ,y=`M.Ton Price`,fill=REGION))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) +
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="JAN 2021 PRODUCT WISE ETHANOL PRICES PER METRIC TON",x="",y="")
+p <- p + facet_grid(.~Product) + scale_fill_viridis_d() + guides(fill=FALSE) 
+p <- ggplotly(p) 
+hide_legend(p) %>% config(displaylogo = FALSE)  %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Jan2021)
+
+```
+
+### Feb-2021 
+
+```{r}
+
+attach(Main_Feb2021)
+
+p <- ggplot(data=Main_Feb2021,aes(x= DATE ,y=`M.Ton Price`,fill=REGION))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) +
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="FEB 2021 PRODUCT WISE ETHANOL PRICES PER METRIC TON",x="",y="")
+p <- p + facet_grid(.~Product) + scale_fill_viridis_d() + guides(fill=FALSE) 
+p <- ggplotly(p) 
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Feb2021)
+
+```
+
+### Mar-2021
+```{r}
+attach(Main_Mar2021)
+
+p <- ggplot(data=Main_Mar2021,aes(x= DATE ,y=`M.Ton Price`,fill=REGION))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) +
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="MAR 2021 PRODUCT WISE ETHANOL PRICES PER METRIC TON",x="",y="")
+p <- p + facet_grid(.~Product) + scale_fill_viridis_d() + guides(fill=FALSE) 
+p <- ggplotly(p) 
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Mar2021)
+
+```
+
+### Apr-2021
+```{r}
+attach(Main_Apr2021)
+
+p <- ggplot(data=Main_Apr2021,aes(x= DATE ,y=`M.Ton Price`,fill=REGION))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) +
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="APR 2021 PRODUCT WISE ETHANOL PRICES PER METRIC TON",x="",y="")
+p <- p + facet_grid(.~Product) + scale_fill_viridis_d() + guides(fill=FALSE) 
+p <- ggplotly(p) 
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Apr2021)
+
+```
+
+### May-2021
+
+
+```{r}
+attach(Main_May2021)
+p <- ggplot(data=Main_May2021,aes(x= DATE ,y=`M.Ton Price`,fill=REGION))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) +
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="MAY 2021 PRODUCT WISE ETHANOL PRICES PER METRIC TON",x="",y="")
+p <- p + facet_grid(.~Product) + scale_fill_viridis_d() + guides(fill=FALSE) 
+p <- ggplotly(p) 
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_May2021)
+
+```
+
+
+
+
+# 2. Regionwise 
+
+## Row {.tabset}
+
+### 2018 - 2021
+
+```{r}
+
+attach(Main)
+
+Product <- as.factor(Main$Product)
+p <- ggplot(data=Main,aes(x= DATE,y=`M.Ton Price`,fill=Product))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) + 
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="REGION WISE ETHANOL PRICES PER METRIC TON - YEAR 2017 TO 2021",x="",y="") 
+p <- p + facet_grid(.~REGION) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main)
+
+```
+
+
+### Jan-2021
+
+```{r}
+# Month Wise Jan 2021  
+attach(Main_Jan2021)
+
+Product <- as.factor(Main_Jan2021$Product)
+p <- ggplot(data=Main_Jan2021,aes(x= DATE,y=`M.Ton Price`,fill=Product))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) + 
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="JAN 2021 REGION WISE ETHANOL PRICES PER METRIC TON",x="",y="") 
+p <- p + facet_grid(.~REGION) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Jan2021)
+
+```
+
+### Feb-2021
+
+```{r}
+
+
+attach(Main_Feb2021)
+
+REGION <- as.factor(Main_Feb2021$REGION)
+Product <- as.factor(Main_Feb2021$Product)
+
+p <- ggplot(data=Main_Feb2021,aes(x= DATE,y=`M.Ton Price`,fill=Product))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) + 
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="FEB 2021 REGION WISE ETHANOL PRICES PER METRIC TON",x="",y="") 
+p <- p + facet_grid(.~REGION) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Feb2021)
+
+```
+
+### Mar-2021
+```{r}
+attach(Main_Mar2021)
+
+REGION <- as.factor(Main_Mar2021$REGION)
+Product <- as.factor(Main_Mar2021$Product)
+
+p <- ggplot(data=Main_Mar2021,aes(x= DATE,y=`M.Ton Price`,fill=Product))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) + 
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="MAR 2021 REGION WISE ETHANOL PRICES PER METRIC TON",x="",y="") 
+p <- p + facet_grid(.~REGION) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Mar2021)
+
+
+
+```
+
+
+### Apr-2021
+
+```{r}
+attach(Main_Apr2021)
+
+REGION <- as.factor(Main_Apr2021$REGION)
+Product <- as.factor(Main_Apr2021$Product)
+
+p <- ggplot(data=Main_Apr2021,aes(x= DATE,y=`M.Ton Price`,fill=Product))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) + 
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="APR 2021 REGION WISE ETHANOL PRICES PER METRIC TON",x="",y="") 
+p <- p + facet_grid(.~REGION) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Apr2021)
+
+```
+
+### May-2021
+
+
+```{r}
+attach(Main_May2021)
+
+REGION <- as.factor(Main_May2021$REGION)
+Product <- as.factor(Main_May2021$Product)
+
+p <- ggplot(data=Main_Mar2021,aes(x= DATE,y=`M.Ton Price`,fill=Product))
+p <- p + geom_point(alpha=0.4) + geom_jitter(alpha=0.4) + 
+  theme(legend.position = "",plot.title=element_text(hjust=0.5)) + labs(title="MAY 2021 REGION WISE ETHANOL PRICES PER METRIC TON",x="",y="") 
+p <- p + facet_grid(.~REGION) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_May2021)
+
+```
+
+
+
+
+# 3.Productwise Box-Plots 
+
+## Row {.tabset}
+
+### 2018 - 2021
+
+```{r}
+# 3 Product Wise Box Plots - Interactive 
+# Year To Date 
+
+attach(Main)
+
+COUNTRY <- as.factor(Main$COUNTRY)
+p <- ggplot(data=Main,aes(x=Product,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.1,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + theme(plot.title=element_text(hjust=0.5))+labs(x="",y="",title="PRODUCT WISE PRICE PER M.TON YEAR 2018 TO 2021")
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main)
+
+```
+
+
+### Jan-2021
+
+```{r}
+
+attach(Main_Jan2021)
+
+COUNTRY <- as.factor(Main_Jan2021$COUNTRY)
+p <- ggplot(data=Main_Jan2021,aes(x=Product,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + theme(plot.title=element_text(hjust=0.5))+labs(x="",y="",title="JAN 2021 PRODUCT WISE PRICE PER M.TON")
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Jan2021)
+
+```
+
+### Feb-2021
+```{r}
+
+attach(Main_Feb2021)
+
+COUNTRY <- as.factor(Main_Feb2021$COUNTRY)
+p <- ggplot(data=Main_Feb2021,aes(x=Product,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + theme(plot.title=element_text(hjust=0.5))+labs(x="",y="",title="FEB 2021 PRODUCT WISE PRICE PER M.TON")
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Feb2021)
+
+```
+
+### Mar-2021
+
+```{r}
+
+attach(Main_Mar2021)
+
+COUNTRY <- as.factor(Main_Mar2021$COUNTRY)
+p <- ggplot(data=Main_Mar2021,aes(x=Product,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + theme(plot.title=element_text(hjust=0.5))+labs(x="",y="",title="MAR 2021 PRODUCT WISE PRICE PER M.TON")
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Mar2021)
+
+```
+
+
+
+### Apr-2021
+
+```{r}
+
+attach(Main_Apr2021)
+
+COUNTRY <- as.factor(Main_Apr2021$COUNTRY)
+p <- ggplot(data=Main_Apr2021,aes(x=Product,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + theme(plot.title=element_text(hjust=0.5))+labs(x="",y="",title="APR 2021 PRODUCT WISE PRICE PER M.TON")
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Apr2021)
+
+```
+
+
+### May-2021
+
+```{r}
+
+attach(Main_May2021)
+
+COUNTRY <- as.factor(Main_May2021$COUNTRY)
+p <- ggplot(data=Main_May2021,aes(x=Product,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + theme(plot.title=element_text(hjust=0.5))+labs(x="",y="",title="MAY 2021 PRODUCT WISE PRICE PER M.TON")
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_May2021)
+
+```
+
+
+
+
+# 4.Regionwise Box-Plots 
+
+## Row {.tabset}
+
+### 2018 - 2021
+
+```{r}
+#4. Region Wise Box Plots - Interactive 
+#Year To Date
+attach(Main)
+COUNTRY <- Main$COUNTRY
+p <- ggplot(data=Main,aes(x=REGION,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.1,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + labs(x="",y="",title="REGION WISE PRICE DISTRIBUTION YEAR 2018 TO 2021") + theme(plot.title = element_text(hjust=0.5))
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+detach(Main)
+
+```
+
+
+### Jan-2021
+
+```{r}
+
+attach(Main_Jan2021)
+
+COUNTRY <- Main_Jan2021$COUNTRY
+p <- ggplot(data=Main_Jan2021,aes(x=REGION,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + labs(x="",y="",title="JAN 2021 REGION WISE PRICE DISTRIBUTION") + theme(plot.title = element_text(hjust=0.5))
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Jan2021)
+```
+
+### Feb-2021
+```{r}
+
+attach(Main_Feb2021)
+# Month To Date 
+COUNTRY <- Main_Feb2021$COUNTRY
+p <- ggplot(data=Main_Feb2021,aes(x=REGION,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + labs(x="",y="",title="FEB 2021 REGION WISE PRICE DISTRIBUTION") + theme(plot.title = element_text(hjust=0.5))
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Feb2021)
+
+```
+
+### Mar-2021
+
+```{r}
+
+
+attach(Main_Mar2021)
+# Month To Date 
+COUNTRY <- Main_Mar2021$COUNTRY
+p <- ggplot(data=Main_Mar2021,aes(x=REGION,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + labs(x="",y="",title="MAR 2021 REGION WISE PRICE DISTRIBUTION") + theme(plot.title = element_text(hjust=0.5))
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Mar2021)
+
+
+```
+
+### Apr-2021
+
+
+```{r}
+
+attach(Main_Apr2021)
+# Month To Date 
+COUNTRY <- Main_Apr2021$COUNTRY
+p <- ggplot(data=Main_Mar2021,aes(x=REGION,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + labs(x="",y="",title="APR 2021 REGION WISE PRICE DISTRIBUTION") + theme(plot.title = element_text(hjust=0.5))
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Apr2021)
+
+```
+
+
+### May-21
+
+
+```{r}
+
+attach(Main_May2021)
+# Month To Date 
+COUNTRY <- Main_May2021$COUNTRY
+p <- ggplot(data=Main_May2021,aes(x=REGION,y=`M.Ton Price`))
+p <- p + geom_boxplot() 
+p <- p + geom_jitter(alpha=0.7,aes(fill=COUNTRY)) + guides(fill=FALSE) + scale_fill_viridis_d()
+p <- p + labs(x="",y="",title="MAY 2021 REGION WISE PRICE DISTRIBUTION") + theme(plot.title = element_text(hjust=0.5))
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_May2021)
+
+```
+
+
+
+# 5.Country Wise
+
+## Row {.tabset}
+
+### 2018 - 2021
+
+```{r}
+#5. Country Wise Prices- Interactive
+attach(Main)
+Product <- Main$Product
+p <- ggplot(data=Main,aes(x= DATE,y=`M.Ton Price`,colour=Product)) 
+p <- p + geom_point(alpha=0.5,size=0.3) + geom_jitter(alpha=0.5,size=0.3) + theme_grey(base_size=10) +
+  theme(axis.text = element_blank(),plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="COUNTRY WISE ETHANOL PRICE PER METRIC TON TREND - YEAR 2018 to YEAR 2021")
+
+p <- p + facet_wrap(~COUNTRY)+guides(fill=FALSE) + scale_color_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main)
+
+```
+
+
+### Jan-2021
+
+```{r}
+# MTD 
+
+attach(Main_Jan2021)
+Product <- Main_Jan2021$Product
+
+p <- ggplot(data=Main_Jan2021,aes(x= DATE,y=`M.Ton Price`,fill=Product)) 
+p <- p + geom_point(alpha=0.5,size=2,color="black")+ geom_jitter(alpha=0.5,size=2,color=NA) + theme_grey(base_size=10) +
+  theme(axis.text = element_blank(),plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="JAN 2021 COUNTRY WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + facet_wrap(~COUNTRY)+guides(fill=FALSE) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Jan2021)
+```
+
+### Feb-2021
+```{r}
+# MTD 
+
+attach(Main_Feb2021)
+
+Product <- Main_Feb2021$Product
+
+p <- ggplot(data=Main_Feb2021,aes(x= DATE,y=`M.Ton Price`,fill=Product)) 
+p <- p + geom_point(alpha=0.5,size=2,color="black")+ geom_jitter(alpha=0.5,size=2,color=NA) + theme_grey(base_size=10) +
+  theme(axis.text = element_blank(),plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="FEB 2021 COUNTRY WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + facet_wrap(~COUNTRY)+guides(fill=FALSE) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Feb2021)
+
+```
+
+### Mar-2021
+
+```{r}
+attach(Main_Mar2021)
+
+Product <- Main_Mar2021$Product
+
+p <- ggplot(data=Main_Mar2021,aes(x= DATE,y=`M.Ton Price`,fill=Product)) 
+p <- p + geom_point(alpha=0.5,size=2,color="black")+ geom_jitter(alpha=0.5,size=2,color=NA) + theme_grey(base_size=10) +
+  theme(axis.text = element_blank(),plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="MAR 2021 COUNTRY WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + facet_wrap(~COUNTRY)+guides(fill=FALSE) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Mar2021)
+
+
+```
+
+
+### Apr-2021
+
+
+```{r}
+attach(Main_Apr2021)
+
+Product <- Main_Apr2021$Product
+
+p <- ggplot(data=Main_Apr2021,aes(x= DATE,y=`M.Ton Price`,fill=Product)) 
+p <- p + geom_point(alpha=0.5,size=2,color="black")+ geom_jitter(alpha=0.5,size=2,color=NA) + theme_grey(base_size=10) +
+  theme(axis.text = element_blank(),plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="APR 2021 COUNTRY WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + facet_wrap(~COUNTRY)+guides(fill=FALSE) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Apr2021)
+
+
+```
+
+### May-2021
+
+
+
+```{r}
+attach(Main_May2021)
+
+Product <- Main_May2021$Product
+
+p <- ggplot(data=Main_May2021,aes(x= DATE,y=`M.Ton Price`,fill=Product)) 
+p <- p + geom_point(alpha=0.5,size=2,color="black")+ geom_jitter(alpha=0.5,size=2,color=NA) + theme_grey(base_size=10) +
+  theme(axis.text = element_blank(),plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="MAY 2021 COUNTRY WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + facet_wrap(~COUNTRY)+guides(fill=FALSE) + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_May2021)
+
+
+```
+
+
+
+
+# 6.Exporter-Wise
+
+## Row {.tabset}
+
+### 2018 - 2021
+
+```{r}
+
+attach(Main)
+EXPORTER <- as.factor(Main$EXPORTER) 
+p <- ggplot(data=Main,aes(x=EXPORTER , y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + guides(fill=FALSE)
+p <- p + theme(legend.position = "")
+p <- p + theme(plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="EXPORTER WISE ETHANOL PRICE PER METRIC TON TREND YEAR 2018-2021")
+p <- p + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+detach(Main)
+
+```
+
+
+### Jan-2021
+
+```{r}
+
+# Month Wise Graphs 
+
+attach(Main_Jan2021)
+
+EXPORTER <- as.factor(Main_Jan2021$EXPORTER) 
+p <- ggplot(data=Main_Jan2021,aes(x=EXPORTER , y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,colour=REGION),alpha=0.3) + guides(fill=FALSE)
+p <- p + theme(legend.position = "")
+p <- p + theme(plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="JAN 2021 EXPORTER WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE)
+
+detach(Main_Jan2021)
+
+```
+
+### Feb-2021
+```{r}
+
+attach(Main_Feb2021)
+
+EXPORTER <- as.factor(Main_Feb2021$EXPORTER) 
+p <- ggplot(data=Main_Feb2021,aes(x=EXPORTER , y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,colour=REGION),alpha=0.3) + guides(fill=FALSE)
+p <- p + theme(legend.position = "")
+p <- p + theme(plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="FEB 2021 EXPORTER WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Feb2021)
+
+```
+
+### Mar-2021
+```{r}
+
+attach(Main_Mar2021)
+
+EXPORTER <- as.factor(Main_Mar2021$EXPORTER) 
+p <- ggplot(data=Main_Mar2021,aes(x=EXPORTER , y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,colour=REGION),alpha=0.3) + guides(fill=FALSE)
+p <- p + theme(legend.position = "")
+p <- p + theme(plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="Mar 2021 EXPORTER WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Mar2021)
+
+
+```
+
+### Apr-2021
+
+
+```{r}
+
+attach(Main_Apr2021)
+
+EXPORTER <- as.factor(Main_Apr2021$EXPORTER) 
+p <- ggplot(data=Main_Apr2021,aes(x=EXPORTER , y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,colour=REGION),alpha=0.3) + guides(fill=FALSE)
+p <- p + theme(legend.position = "")
+p <- p + theme(plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="APR 2021 EXPORTER WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Apr2021)
+
+```
+
+### May-2021
+
+
+```{r}
+
+attach(Main_May2021)
+
+EXPORTER <- as.factor(Main_May2021$EXPORTER) 
+p <- ggplot(data=Main_May2021,aes(x=EXPORTER , y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,colour=REGION),alpha=0.3) + guides(fill=FALSE)
+p <- p + theme(legend.position = "")
+p <- p + theme(plot.title = element_text(hjust=0.5),legend.position = "") + labs(x="",y="",title="MAY 2021 EXPORTER WISE ETHANOL PRICE PER METRIC TON TREND")
+p <- p + scale_fill_viridis_d()
+p <- ggplotly(p)
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+
+detach(Main_May2021)
+
+```
+
+
+
+# 7.Importer-Wise 
+
+## Row {.tabset}
+
+### 2018-2021
+```{r}
+#Month To Date 
+attach(Main)
+IMPORTER <- as.factor(Main$IMPORTER)
+p <- ggplot(data=Main,aes(x=reorder(IMPORTER,`M.Ton Price`), 
+                                            y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,text=IMPORTER),alpha=0.5) + guides(fill=FALSE)
+p <- p + theme(legend.position = "") + theme_bw(base_size=4)
+p <- p + theme(axis.text.y =element_blank()) + labs(x="",y="")
+p <- p + scale_fill_viridis_d() 
+
+p <- ggplotly(p,tooltip= c("text","M.Ton Price"))
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+detach(Main)
+
+
+```
+
+
+### Jan-2021
+
+```{r}
+
+#Month To Date 
+attach(Main_Jan2021)
+IMPORTER <- as.factor(Main_Jan2021$IMPORTER)
+p <- ggplot(data=Main_Jan2021,aes(x=reorder(IMPORTER,`M.Ton Price`), 
+                                            y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,text=IMPORTER),alpha=0.5) + guides(fill=FALSE)
+p <- p + theme(legend.position = "") + theme_bw(base_size=4)
+p <- p + theme(axis.text.y =element_blank()) + labs(x="",y="")
+p <- p + scale_fill_viridis_d() 
+
+p <- ggplotly(p,tooltip= c("text","M.Ton Price"))
+hide_legend(p) %>% config(displaylogo = FALSE) %>%  config(displayModeBar = FALSE) 
+detach(Main_Jan2021)
+
+```
+
+### Feb-2021
+```{r}
+
+attach(Main_Feb2021)
+
+IMPORTER <- as.factor(Main_Feb2021$IMPORTER)
+
+p <- ggplot(data=Main_Feb2021,aes(x=reorder(IMPORTER,`M.Ton Price`), 
+                                            y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,text=IMPORTER),alpha=0.5) + guides(fill=FALSE)
+p <- p + theme(legend.position = "") + theme_bw(base_size=4)
+p <- p + theme(axis.text.y =element_blank()) + labs(x="",y="")
+p <- p + scale_fill_viridis_d() 
+p <- ggplotly(p,tooltip= c("text","M.Ton Price"))
+hide_legend(p) %>% config(displaylogo = FALSE)  %>%  config(displayModeBar = FALSE) 
+detach(Main_Feb2021)
+
+```
+
+### Mar-2021
+
+```{r}
+
+attach(Main_Mar2021)
+
+IMPORTER <- as.factor(Main_Mar2021$IMPORTER)
+
+p <- ggplot(data=Main_Mar2021,aes(x=reorder(IMPORTER,`M.Ton Price`), 
+                                            y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,text=IMPORTER),alpha=0.5) + guides(fill=FALSE)
+p <- p + theme(legend.position = "") + theme_bw(base_size=4)
+p <- p + theme(axis.text.y =element_blank()) + labs(x="",y="")
+p <- p + scale_fill_viridis_d() 
+p <- ggplotly(p,tooltip= c("text","M.Ton Price"))
+hide_legend(p) %>% config(displaylogo = FALSE)  %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Mar2021)
+
+```
+
+### Apr-2021
+
+
+```{r}
+
+attach(Main_Apr2021)
+
+IMPORTER <- as.factor(Main_Apr2021$IMPORTER)
+
+p <- ggplot(data=Main_Apr2021,aes(x=reorder(IMPORTER,`M.Ton Price`), y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,text=IMPORTER),alpha=0.5) + guides(fill=FALSE)
+p <- p + theme(legend.position = "") + theme_bw(base_size=4)
+p <- p + theme(axis.text.y =element_blank()) + labs(x="",y="")
+p <- p + scale_fill_viridis_d() 
+p <- ggplotly(p,tooltip= c("text","M.Ton Price"))
+hide_legend(p) %>% config(displaylogo = FALSE)  %>%  config(displayModeBar = FALSE) 
+
+detach(Main_Apr2021)
+
+```
+
+
+### May-2021
+
+```{r}
+
+attach(Main_May2021)
+
+IMPORTER <- as.factor(Main_May2021$IMPORTER)
+
+p <- ggplot(data=Main_May2021,aes(x=reorder(IMPORTER,`M.Ton Price`), y= `M.Ton Price`))
+p <- p + geom_boxplot() + coord_flip()
+p <- p + geom_point(aes(fill=Product,text=IMPORTER),alpha=0.5) + guides(fill=FALSE)
+p <- p + theme(legend.position = "") + theme_bw(base_size=4)
+p <- p + theme(axis.text.y =element_blank()) + labs(x="",y="")
+p <- p + scale_fill_viridis_d() 
+p <- ggplotly(p,tooltip= c("text","M.Ton Price"))
+hide_legend(p) %>% config(displaylogo = FALSE)  %>%  config(displayModeBar = FALSE) 
+
+detach(Main_May2021)
+
+```
